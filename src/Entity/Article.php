@@ -18,7 +18,7 @@ class Article
     private ?string $name = null;
 
     #[ORM\Column(type: Types::BLOB, nullable: true)]
-    private ?string $content;
+    private $content;
 
     #[ORM\ManyToOne(inversedBy: 'articles')]
     #[ORM\JoinColumn(nullable: false)]
@@ -55,8 +55,14 @@ class Article
         return $this;
     }
 
-    public function getContent(): ?string
+    public function getContent(): string
     {
+        # using doctrine fixtures will save this field as a stream while
+        # persisting it with entity manager will create it as string
+
+        if (is_resource($this->content)) {
+            return strval(stream_get_contents($this->content));
+        }
         return $this->content;
     }
 
