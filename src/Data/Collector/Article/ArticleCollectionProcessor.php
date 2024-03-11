@@ -4,7 +4,6 @@ namespace App\Data\Collector\Article;
 
 use App\Entity\Article;
 use App\Entity\Source;
-use App\Repository\ArticleRepository;
 use App\Repository\SourceRepository;
 use Doctrine\ORM\EntityManagerInterface;
 
@@ -17,6 +16,7 @@ readonly class ArticleCollectionProcessor
 
     public function save(array $articles): int
     {
+        // sleep(10); // Only for testing asynchronous messages
         foreach ($articles as $a) {
             $sourceName = $a['source_name'];
             $article = (new Article())
@@ -52,7 +52,6 @@ readonly class ArticleCollectionProcessor
             ->setName($sourceName);
         $this->em->persist($source);
         $this->em->flush();
-
         return $source;
     }
 }
