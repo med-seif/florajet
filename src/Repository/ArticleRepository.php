@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\Article;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\DBAL\Exception;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -21,6 +22,26 @@ class ArticleRepository extends ServiceEntityRepository
         parent::__construct($registry, Article::class);
     }
 
+    /**
+     * @throws Exception
+     */
+    public function getArticlesBySourceName(string $sourceName) : array
+    {
+        $conn = $this->getEntityManager()->getConnection();
+        $sql = '
+            SELECT
+                a.id,
+                a.name,
+                s.name as source_name
+            FROM article a
+            JOIN source s ON s.id = a.source_id_id
+            WHERE s.name = :sourceName
+            ';
+
+        $resultSet = $conn->executeQuery($sql, ['sourceName' => $sourceName]);
+
+        return $resultSet->fetchAllAssociative();
+    }
     //    /**
     //     * @return Article[] Returns an array of Article objects
     //     */
