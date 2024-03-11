@@ -11,8 +11,7 @@ use Doctrine\ORM\EntityManagerInterface;
 readonly class ArticleCollectionProcessor
 {
     public function __construct(private EntityManagerInterface $em,
-                                private SourceRepository       $sourceRepository,
-                                private ArticleRepository      $articleRepository)
+                                private SourceRepository       $sourceRepository)
     {
     }
 

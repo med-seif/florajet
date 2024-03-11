@@ -25,7 +25,12 @@ services:
         arguments:
             - !tagged_iterator { tag: 'article.collector', default_index_method: 'getIndex' }
     Doctrine\DBAL\Configuration : ~
+    # static factory
     Faker\Generator:
         factory: ['App\Factory\FakerFactory', 'create']
+    # non-static factory
+    App\Factory\HttpCacheFactory : ~    
+    App\Cache\CachingHttpClient:
+        factory : ['@App\Factory\HttpCacheFactory', 'create']
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones

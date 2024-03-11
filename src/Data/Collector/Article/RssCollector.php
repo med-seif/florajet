@@ -7,12 +7,13 @@ use Symfony\Contracts\HttpClient\Exception\ClientExceptionInterface;
 use Symfony\Contracts\HttpClient\Exception\RedirectionExceptionInterface;
 use Symfony\Contracts\HttpClient\Exception\ServerExceptionInterface;
 use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
-use Symfony\Contracts\HttpClient\HttpClientInterface;
+
 
 class RssCollector extends AbstractArticleCollector
 {
-    public function __construct(private readonly HttpClientInterface $httpClient,
-                                private readonly DecoderInterface    $decoder)
+    public function __construct(
+        private readonly \App\Cache\CachingHttpClient $httpClient,
+        private readonly DecoderInterface    $decoder)
     {
     }
 
